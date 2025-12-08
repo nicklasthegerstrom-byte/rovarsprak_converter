@@ -1,5 +1,5 @@
-from core.converter import to_rovarsprak
-from core.filehandler import list_input_files, read_file, write_file, make_output_filename
+from core.converter import to_rovarsprak, from_rovarsprak
+from core.filehandler import list_input_files, read_file, write_file, make_output_filename, make_decoded_output_filename
 from config import OUTPUT_DIR
 import re
 
@@ -38,7 +38,7 @@ def input_rovarsprak():
 
         save_file(resultat)
 
-        if yes_no("Vill du konvertera något annat?"):
+        if yes_no("Vill du konvertera något annat? J/N"):
             continue
         else:
             return
@@ -72,8 +72,18 @@ def convert_file(selected_file):
     print("Du valde:", selected_file.name)
 
     text_from_file = read_file(selected_file)
-    translated = to_rovarsprak(text_from_file)
+    converted = to_rovarsprak(text_from_file)
     new_txt_path = make_output_filename(selected_file)
+    write_file(new_txt_path, converted)
+
+    print(f"\nDin fil är sparad som {new_txt_path.name}!")
+
+def translate_file(selected_file):
+    print("Du valde:", selected_file.name)
+
+    text_from_file = read_file(selected_file)
+    translated = from_rovarsprak(text_from_file)
+    new_txt_path = make_decoded_output_filename(selected_file)
     write_file(new_txt_path, translated)
 
     print(f"\nDin fil är sparad som {new_txt_path.name}!")
@@ -90,7 +100,23 @@ def convert_from_file():
 
         convert_file(selected_file)
 
-        if yes_no("Vill du läsa in en till fil?"):
+        if yes_no("Vill du läsa in en till fil? J/N"):
+            continue
+        else:
+            break
+
+def translate_from_file():
+    while True:
+        selected_file = select_file()
+
+        # ❗ Måste hantera att select_file kan returnera None
+        if selected_file is None:
+            print("Ingen fil vald. Återgår till menyn.")
+            return
+
+        translate_file(selected_file)
+
+        if yes_no("Vill du läsa in en till fil? J/N"):
             continue
         else:
             break
@@ -99,9 +125,10 @@ def convert_from_file():
 def app():
     print("\nHej och Välkommen till Rövarspråkskonverteraren!")
     while True:
-        print("1. Skriv in text du vill översätta.")
-        print("2. Översätt från en text-fil.")
-        print("3. Avsluta")
+        print("1. Skriv in text du vill konvertera till rövarspråk.")
+        print("2. Konvertera till rövarspråk från en text-fil.")
+        print("3. Översätt rövarspråk från en text-fil")
+        print("4. Avsluta")
 
         val = input("Gör ditt val:")
 
@@ -113,6 +140,9 @@ def app():
             convert_from_file()
 
         elif val == "3":
+            translate_from_file()
+
+        elif val =="4":
             break
         else:
             print("Fel val ditt popucockoko!")
