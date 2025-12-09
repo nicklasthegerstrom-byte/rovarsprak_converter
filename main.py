@@ -1,6 +1,4 @@
-from core.ui import app
+from ui import app
 
 if __name__ == "__main__":
     app()
-
-    
