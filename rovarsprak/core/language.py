@@ -1,5 +1,4 @@
 
-
 #Alla vokaler:
 vokaler = "aeiouyåäöAEIOUYÅÄÖ"
 

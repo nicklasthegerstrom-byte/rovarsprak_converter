@@ -1,4 +1,4 @@
-from core.language import is_vokal, is_konsonant
+from rovarsprak.core.language import is_vokal, is_konsonant
 
 def analyze_text(text: str) -> dict:
     vowels = 0

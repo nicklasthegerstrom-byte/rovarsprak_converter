@@ -1,0 +1,2 @@
+[console_scripts]
+rovarsprak = rovarsprak.main:main

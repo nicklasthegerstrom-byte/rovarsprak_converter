@@ -1,5 +1,5 @@
+from rovarsprak.config import INPUT_DIR, OUTPUT_DIR
 from pathlib import Path
-from config import INPUT_DIR, OUTPUT_DIR
 
 def read_file(path: Path) -> str:
     return path.read_text(encoding="utf-8")
