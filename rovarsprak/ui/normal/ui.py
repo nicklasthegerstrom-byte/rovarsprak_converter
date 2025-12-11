@@ -1,10 +1,7 @@
 from rovarsprak.core.converter import to_rovarsprak, translate_file, convert_file
 from rovarsprak.core.filehandler import (
     list_input_files,
-    read_file,
-    write_file,
-    make_output_filename,
-    make_decoded_output_filename
+    list_output_files
 )
 from rovarsprak.config import OUTPUT_DIR
 from rovarsprak.utils.logger import logger
@@ -17,7 +14,6 @@ from rovarsprak.ui.normal.analys import (
 from rovarsprak.shared.helpers import (
     save_file,
     yes_no,
-    is_valid_filename,
     select_file
 )
 
@@ -31,7 +27,7 @@ from rovarsprak.ui.normal.menu_colors import (
 )
 
 from rovarsprak.core import hacker_mode
-import re, time
+import time
 from rovarsprak.ui.hacker.ui import run_hacker_ui
 
 
@@ -135,7 +131,7 @@ def batch_convert():
 
 def batch_translate():
     while True:
-        files = list_input_files()
+        files = list_output_files()
 
         if not files:
             print("Inga filer att konvertera!")
@@ -155,8 +151,6 @@ def batch_translate():
         if not yes_no("Vill du köra batch igen? J/N: "):
             return
         
-
-
 def run_normal_ui():
     print_logo()
 

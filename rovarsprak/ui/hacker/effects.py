@@ -1,14 +1,14 @@
 import time
 import sys
 import random
-from rovarsprak.core.hacker_mode import color
+from rovarsprak.core.hacker_mode import color as hcol
 
 def hacker_intro_animation():
     text = ">>> CALIBRATING LASER KEYS… READY <<<"
     for char in text:
-        print(color(char), end="", flush=True)
-        time.sleep(0.03)   # justera hastighet här (0.02–0.05 är lagom)
-    print()  # radbrytning efteråt
+        print(hcol(char), end="", flush=True)
+        time.sleep(0.03)
+    print()
     time.sleep(0.2)
 
 
@@ -18,38 +18,35 @@ def hacker_logo_glitch():
     logo = "RÖVARSPRÅKCONVERTER 5000 INITIALIZING"
     build = [" "] * len(logo)
 
-    # Antal glitch-faser
-    for phase in range(12):
+    # Glitch-faser
+    for _ in range(12):
         glitch_output = ""
 
         for i in range(len(logo)):
-            # 30% chans att visa rätt bokstav under glitch-fasen
             if random.random() < 0.3:
                 build[i] = logo[i]
-
-            # 70% chans till glitch-tecken
             else:
                 build[i] = random.choice(GLITCH_CHARS)
 
             glitch_output += build[i]
 
-        # Skriv ut på samma rad
-        sys.stdout.write("\r" + color(glitch_output))
+        sys.stdout.write("\r" + hcol(glitch_output))
         sys.stdout.flush()
         time.sleep(0.07)
 
-    # När allt är "byggt" – skriv riktig text långsamt
+    # Rensa rad
     sys.stdout.write("\r")
     sys.stdout.flush()
 
+    # Skriv upp byggd text långsamt
     final_text = ""
     for char in logo:
         final_text += char
-        sys.stdout.write(color("\r" + final_text))
+        sys.stdout.write(hcol("\r" + final_text))
         sys.stdout.flush()
         time.sleep(0.03)
 
-    print(color(" ✓"))
+    print(hcol(" ✓"))
     time.sleep(0.3)
 
 def hacker_glitch_line(width: int = 40, delay: float = 0.0):
@@ -71,12 +68,12 @@ def hacker_self_destruct():
 
     # Dramatic startup sequence
     for step in steps:
-        line = color(f">>> {step}...")
+        line = hcol(f">>> {step}...")
         print(line)
         time.sleep(0.4)
 
     print()
-    print(color("   *** SELF-DESTRUCT SEQUENCE INITIATED ***"))
+    print(hcol("   *** SELF-DESTRUCT SEQUENCE INITIATED ***"))
     time.sleep(0.5)
     print()
 
@@ -89,11 +86,11 @@ def hacker_self_destruct():
         sys.stdout.flush()
         time.sleep(0.7)
 
-    print(color("\n\n🔥 CORE OVERLOAD COMPLETE 🔥"))
+    print(hcol("\n\n🔥 CORE OVERLOAD COMPLETE 🔥"))
     time.sleep(0.3)
-    print(color(">> SHUTTING DOWN SYSTEM CHANNELS..."))
+    print(hcol(">> SHUTTING DOWN SYSTEM CHANNELS..."))
     time.sleep(0.3)
-    print(color(">> CONNECTION TERMINATED"))
+    print(hcol(">> CONNECTION TERMINATED"))
     time.sleep(0.2)
     print()
 

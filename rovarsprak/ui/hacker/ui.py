@@ -6,12 +6,8 @@ from rovarsprak.core.converter import (
 )
 from rovarsprak.core.filehandler import (
     list_input_files,
-    read_file,
-    write_file,
-    make_output_filename,
-    make_decoded_output_filename
+    list_output_files
 )
-from rovarsprak.core.analyzer import analyze_text
 from rovarsprak.core import hacker_mode   # endast ON/OFF state
 
 # Konfiguration & logger
@@ -21,11 +17,8 @@ from rovarsprak.utils.logger import logger
 # Shared helpers (input, J/N, filval osv.)
 from rovarsprak.shared.helpers import (
     save_file,
-    yes_no,
-    is_valid_filename,
     select_file
 )
-
 
 from rovarsprak.core.hacker_mode import toggle
 
@@ -36,11 +29,10 @@ from rovarsprak.ui.hacker.analys import (
 )
 
 # Hacker-animationer
-from rovarsprak.ui.hacker.effects import hacker_logo_glitch, hacker_intro_animation, hacker_self_destruct, hacker_glitch_line
+from rovarsprak.ui.hacker.effects import hacker_logo_glitch, hacker_intro_animation, self_destruct_animation, hacker_glitch_line
 
 # Standardmoduler
 import time
-import re
 import random
 
 from rovarsprak.core.hacker_mode import color as hcol
@@ -52,19 +44,39 @@ from rovarsprak.core.hacker_mode import color as hcol
 # ===============================
 
 def show_hacker_menu():
-    print()
-    hacker_intro_animation()
+
     print()
     print("[1] DEPLOY ENCRYPTION PROTOCOL (USER INPUT)")
     print("[2] LOAD FILE → APPLY SCRAMBLER SEQUENCE")
-    print("[3] REVERSE ENGINEER ENCRYPTED PAYLOAD")
+    print("[3] LOAD FILE → DECRYPT CHOSEN PAYLOAD")
     print("[4] EXECUTE MASS-ENCRYPTION SUBROUTINE")
     print("[5] INITIATE GLOBAL DECRYPTION WAVE")
-    print("[6] DISABLE SYSTEM OVERCLOCKING (RETURN TO NOOB MODE)")
+    print("[6] DISABLE ULTRA HACKER MODE (RETURN TO NOOB MODE)")
     print("[7] INITIATE SELF-DESTRUCT SEQUENCE (EXIT)")
     print()
 
 #HACKER FUNCTIONS:
+
+def yes_no_hacker(prompt: str) -> bool:
+    """
+    Hacker-version av yes/no.
+    Accepterar Y/N. Ger glitchiga felmeddelanden.
+    """
+    while True:
+        ans = input(hcol(prompt)).strip().lower()
+
+        if ans == "y":
+            return True
+        if ans == "n":
+            return False
+
+        # FEL – glitch error
+        glitch = "".join(random.choice("▓░▞▚#/&@") for _ in range(12))
+        print(hcol(f"!!! INVALID RESPONSE DETECTED: {glitch} !!!"))
+        time.sleep(0.2)
+        print(hcol("SYSTEM REQUIRES A 'Y' OR 'N' INPUT. RETRYING...\n"))
+        time.sleep(0.2)
+
 def hacker_input():
     while True:
         # Glitching input prompt
@@ -87,11 +99,11 @@ def hacker_input():
         time.sleep(0.2)
 
         # Save option
-        if yes_no("STORE OUTPUT TO ENCRYPTED FILE? (Y/N): "):
+        if yes_no_hacker("STORE OUTPUT TO ENCRYPTED FILE? (Y/N): "):
             save_file(encoded)
 
         print()
-        if not yes_no("FEED MORE DATA INTO SCRAMBLER? (Y/N): "):
+        if not yes_no_hacker("FEED MORE DATA INTO EPIC MACHINE? (Y/N): "):
             print("\n> DISCONNECTING INPUT CHANNEL...\n")
             time.sleep(0.3)
             return
@@ -120,7 +132,6 @@ def select_file_hacker():
     print(hcol(f"\n> TARGET ACQUIRED: {selected.name}\n"))
     time.sleep(0.3)
     return selected
-
 
 def hacker_encode_file():
     print(hcol("\n> INITIALIZING ENCRYPTION ROUTINE...\n"))
@@ -152,7 +163,7 @@ def hacker_encode_file():
 
     print_converted_analys_hacker(result)
 
-    if yes_no(hcol("PROCESS ANOTHER FILE? (Y/N): ")):
+    if yes_no_hacker(hcol("PROCESS ANOTHER FILE? (Y/N): ")):
         return hacker_encode_file()  
     else:
         print(hcol("\n> EXITING ENCRYPTION SUBSYSTEM..."))
@@ -182,19 +193,73 @@ def hacker_decode_file():
         print(hcol(line))
         time.sleep(0.04)
 
-    # Perform actual decryption
-    result = translate_file(selected)
+def hacker_batch_encode():
+    print(hcol("\n> INITIALIZING MASS-ENCRYPTION SUBSYSTEM...\n"))
+    time.sleep(0.5)
 
-    print(hcol("\n> DECRYPTION SUCCESSFUL. PAYLOAD RESTORED.\n"))
-
-    print_translated_analys_hacker(result)
-
-    if yes_no(hcol("DECRYPT ANOTHER PAYLOAD? (Y/N): ")):
-        return hacker_decode_file()
-    else:
-        print(hcol("\n> EXITING DECRYPTION SUBSYSTEM..."))
-        time.sleep(0.3)
+    files = list_input_files()
+    if not files:
+        print(hcol("> ERROR: NO PAYLOADS FOUND FOR MASS-PROCESSING.\n"))
         return
+
+    print(hcol(f"> PAYLOADS DETECTED: {len(files)} FILES"))
+    time.sleep(0.3)
+    print(hcol("> ACTIVATING SCRAMBLER SWARM..."))
+    time.sleep(0.4)
+
+    # Animation: scanning through file list
+    for f in files:
+        glitch = "".join(random.choice("▓▒░█▚▞▟") for _ in range(25))
+        print(hcol(f"[SCAN] {f.name:<20} {glitch}"))
+        time.sleep(0.08)
+
+    print(hcol("\n> MASS-ENCRYPTION IN PROGRESS...\n"))
+    time.sleep(0.5)
+
+    # Actual batch encode
+    for f in files:
+        print(hcol(f"> ENCRYPTING {f.name}..."))
+        time.sleep(0.1)
+        result = convert_file(f)
+        print_converted_analys_hacker(result)
+        time.sleep(0.15)
+
+    print(hcol("\n> ALL PAYLOADS SUCCESSFULLY ENCRYPTED.\n"))
+    time.sleep(0.4)
+    print(hcol("> MASS-ENCRYPTION SUBSYSTEM STANDBY.\n"))
+
+def hacker_batch_decode():
+    print(hcol("\n> INITIALIZING GLOBAL DECRYPTION WAVE...\n"))
+    time.sleep(0.5)
+
+    files = [f for f in list_output_files() if f.name.endswith("_rovar.txt")]
+    if not files:
+        print(hcol("> ERROR: NO ENCRYPTED PAYLOADS DETECTED.\n"))
+        return
+
+    print(hcol(f"> TARGETS IDENTIFIED: {len(files)} FILES"))
+    time.sleep(0.3)
+    print(hcol("> SPINNING UP QUANTUM DE-SCRAMBLER ARRAY..."))
+    time.sleep(0.4)
+
+    for f in files:
+        glitch = "".join(random.choice("▙▜▟▛░▒▓█") for _ in range(22))
+        print(hcol(f"[DECRYPT-SCAN] {f.name:<20} {glitch}"))
+        time.sleep(0.08)
+
+    print(hcol("\n> INITIATING RESTORATION PROCESS...\n"))
+    time.sleep(0.5)
+
+    for f in files:
+        print(hcol(f"> DECRYPTING {f.name}..."))
+        time.sleep(0.1)
+        result = translate_file(f)              # ← här ska f användas
+        print_translated_analys_hacker(result)
+        time.sleep(0.15)
+
+    print(hcol("\n> GLOBAL DECRYPTION WAVE COMPLETE.\n"))
+    time.sleep(0.4)
+    print(hcol("> SYSTEM RETURNING TO IDLE MODE.\n"))
         
 
 
@@ -204,9 +269,12 @@ def hacker_decode_file():
 
 def run_hacker_ui():
     """Startar hela hackermodet."""
-    
+
     # glitch-intro
     hacker_logo_glitch()
+    hacker_intro_animation()
+    time.sleep(0.3)
+    print()  
 
     while True:
         show_hacker_menu()
@@ -223,17 +291,19 @@ def run_hacker_ui():
             hacker_decode_file()
 
         elif val == "4":
-            pass
+            hacker_batch_encode()
 
         elif val == "5":
-            pass
+            hacker_batch_decode()
 
         elif val == "6":
             # Tillbaka till normal mode
+            toggle()
+            print("FAREWELL NOOB!")
             return
 
         elif val == "7":
-            hacker_self_destruct() 
+            self_destruct_animation() 
             
 
         else:

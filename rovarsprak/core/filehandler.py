@@ -18,3 +18,7 @@ def make_decoded_output_filename(input_path: Path) -> Path:
 def list_input_files() -> list[Path]:
     """Returnerar en lista med alla .txt-filer i input-mappen."""
     return list(INPUT_DIR.glob("*.txt"))
+
+def list_output_files():
+    """Returnerar en lista med alla .txt-filer i output-mappen."""
+    return list(OUTPUT_DIR.glob("*.txt"))
