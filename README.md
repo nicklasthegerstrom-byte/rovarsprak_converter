@@ -1,102 +1,104 @@
-# Rövarspråkskonverterare
+# Rövarspråkskonverterare 3000
 
-Ett Python-projekt som kan:
+Ett modulärt Python-CLI som konverterar text till och från Rövarspråk.
 
-- konvertera text till Rövarspråk
-- översätta tillbaka från Rövarspråk
-- konvertera enskilda filer
-- batch-konvertera flera filer
-- analysera text
-- logga alla händelser till en loggfil
+Projektet är uppbyggt med tydlig separation mellan **core-logik** och **presentation (UI)**.  
+Samma motor driver både ett normalt läge och ett alternativt *Ultra Hacker Mode*.
 
-Projektet är uppbyggt med en ren modulstruktur och använder `pathlib` och `logging`
-för filhantering och loggning. Ingen extern dependency krävs.
+---
+
+## Funktioner
+
+- Konvertera text till Rövarspråk
+- Översätta från Rövarspråk
+- Konvertera enskilda textfiler
+- Batch-konvertera flera filer
+- Enkel textanalys (ord, vokaler, konsonanter, längd m.m.)
+- Loggning av alla operationer
+
+---
+
+## Ultra Hacker Mode
+
+Alternativt UI med glitch-animationer, terminaleffekter och tematiserad meny.
+
+Detta är ett separat presentationslager som använder samma core-funktioner som normal-läget.  
+Ingen duplicerad affärslogik — endast annorlunda rendering.
+
+---
+
+## Arkitektur
+
+```
+rovarsprak/
+│
+├── core/           # Konverteringslogik och filhantering
+├── ui/             # Normal UI och Hacker UI
+├── shared/         # Hjälpfunktioner
+├── utils/          # Logger
+├── config.py
+└── data/
+    ├── input/
+    └── output/
+```
+
+Designprinciper:
+- Separation mellan logik och UI
+- Ingen extern dependency
+- pathlib för filhantering
+- logging för spårbarhet
+- CLI-entrypoint via `python -m rovarsprak` eller installerat kommando
 
 ---
 
 ## Installation
 
-1. Klona projektet:
-   git clone <repo>
+```bash
+git clone <repo-url>
+cd rovarsprak_converter
 
-2. Gå in i projektet:
-   cd rovarsprak_converter
+python3 -m venv venv
+source venv/bin/activate
 
-3. (valfritt) Skapa ett virtuellt environment:
-   python3 -m venv venv
-   source venv/bin/activate
-
-4. Installera projektet i utvecklingsläge:
-   pip install -e .
+pip install -e .
+```
 
 ---
 
 ## Kör programmet
 
-### Alternativ 1: Via Python-modul
+Via modul:
+
+```bash
 python -m rovarsprak
+```
 
-### Alternativ 2: Via installerat CLI-kommando
+Via installerat CLI-kommando:
+
+```bash
 rovar
-
----
-
-## Projektstruktur
-
-rovarsprak/
-│
-├── __init__.py
-├── main.py
-├── ui.py
-├── config.py
-│
-├── core/
-│   ├── converter.py
-│   ├── filehandler.py
-│   ├── language.py
-│
-├── utils/
-│   └── logger.py
-│
-└── data/
-    ├── input/
-    └── output/
+```
 
 ---
 
 ## Loggning
 
-Alla loggar sparas i:
-`rovarsprak/logs/rovarsprak.log`
+Loggar sparas i:
 
-Loggning används för att spåra:
+```
+rovarsprak/logs/rovarsprak.log
+```
 
+Loggningen spårar:
 - menyval
 - filoperationer
-- fel
 - batchprocesser
-
----
-
-## Batch-konvertering
-
-Programmet kan automatiskt konvertera alla `.txt`-filer i `data/input/` och spara resultatet i `data/output/`.
-
----
-
-## Textanalys
-
-Projektet innehåller en enkel textanalysmodul som kan:
-
-- räkna ord
-- räkna vokaler / konsonanter
-- hitta längsta ordet
-- analysera längd och tecken
+- fel
 
 ---
 
 ## Krav
 
-Python 3.11 eller senare.
+Python 3.11+
 
-Inga externa dependencies krävs.
+Inga externa dependencies.
