@@ -38,7 +38,6 @@ import random
 from rovarsprak.core.hacker_mode import color as hcol
 
 
-
 # ===============================
 # HACKER MENU
 # ===============================
@@ -305,6 +304,5 @@ def run_hacker_ui():
         elif val == "7":
             self_destruct_animation() 
             
-
         else:
             print(hcol("INVALID INPUT. TRY AGAIN."))

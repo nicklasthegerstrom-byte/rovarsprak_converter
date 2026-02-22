@@ -56,45 +56,6 @@ def hacker_glitch_line(width: int = 40, delay: float = 0.0):
     if delay > 0:
         time.sleep(delay)
 
-def hacker_self_destruct():
-    steps = [
-        "ARMING FAILSAFE PROTOCOLS",
-        "REVERSING POLARITY COILS",
-        "PURGING RÖVARSPRÅK RAM RESIDUE",
-        "IGNITING THERMO-CORE",
-        "DISENGAGING SAFETY LIMITERS",
-        "SELF-DESTRUCT READY"
-    ]
-
-    # Dramatic startup sequence
-    for step in steps:
-        line = hcol(f">>> {step}...")
-        print(line)
-        time.sleep(0.4)
-
-    print()
-    print(hcol("   *** SELF-DESTRUCT SEQUENCE INITIATED ***"))
-    time.sleep(0.5)
-    print()
-
-    # Countdown with glitch
-    for i in range(5, 0, -1):
-        scrambled = "".join(random.choice(GLITCH_CHARS) for _ in range(12))
-        sys.stdout.write(
-            color(f"\rT-{i}   SYSTEM FRAGMENTATION: {scrambled}")
-        )
-        sys.stdout.flush()
-        time.sleep(0.7)
-
-    print(hcol("\n\n🔥 CORE OVERLOAD COMPLETE 🔥"))
-    time.sleep(0.3)
-    print(hcol(">> SHUTTING DOWN SYSTEM CHANNELS..."))
-    time.sleep(0.3)
-    print(hcol(">> CONNECTION TERMINATED"))
-    time.sleep(0.2)
-    print()
-
-
 def self_destruct_animation():
     intro = [
         "SYSTEMET INITIERAR SJÄLVDESTRUKTION...",
